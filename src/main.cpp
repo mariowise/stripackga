@@ -9,16 +9,35 @@
 
 #include <stripGenome.h>
 #include <piece.h>
+#include <vector>
 
 using namespace std;
 
+extern vector<piece> * pieces;
+
+extern int pieceTotal;
+
+extern int widthTotal;
+
 int main(int argc, char * argv[]) {
+	
 	srand(time(NULL));
 
 	cout << "Comenzando ejecución del 'strip packing problem'." << endl;
 
-	readInput("inst/B1.txt");
+	readInput("inst/A1.txt");
 
+	cout << "  Construyendo contenedor de fenotipo" << endl;
+	phenotype fenoma(widthTotal);
+
+	cout << "  Ingresando piezas" << endl;
+	fenoma.write(cout); cout << endl;
+	int i;
+	for(i = 0; i < pieces->size(); i++) {
+		fenoma.push(&pieces->at(i));
+	}
+
+	/*
 	stripGenome genome;
 	GASimpleGA ga(genome);
 	
@@ -30,6 +49,7 @@ int main(int argc, char * argv[]) {
 
 	// Lanzamiento
 	ga.evolve();
+	*/
 
 	return EXIT_SUCCESS;
 }

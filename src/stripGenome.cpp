@@ -8,6 +8,7 @@
 #include <iostream>
 
 #include <stripGenome.h>
+#include <piece.h>
 
 void stripGenome::stripInitializer(GAGenome & genoma) {
 	stripGenome & newGenoma = (stripGenome &) genoma;
@@ -28,7 +29,7 @@ void stripGenome::stripInitializer(GAGenome & genoma) {
 		}
 	}
 	newGenoma.stripCodex = positions;
-	// newGenoma.write(cout);
+	newGenoma.write(cout);
 }
 
 float stripGenome::stripEvaluator(GAGenome & genoma) {
