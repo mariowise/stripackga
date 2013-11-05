@@ -31,10 +31,10 @@ vector<string> * split(string s, char delim) {
 	replaceAll(s, "\n", "\n");
 	stringstream ss(s);
 	string item;
-	while(getline(ss, item, delim)) {
+
+	while(getline(ss, item, delim))
 		response->push_back(item);
-		// cout << item << "(" << item.length() << ")" <<  endl;
-	}
+	
 	return response;
 }
 
@@ -62,10 +62,6 @@ void readInput(char * target) {
 		row++;
 	}
 	fd.close();
-	
-	// for(row = 0; row < pieces->size(); row++) {
-	// 	cout << "piece(" << pieces->at(row).id << ", " << pieces->at(row).width << ", " << pieces->at(row).height << ")" << endl;
-	// }
 }
 
 
@@ -157,6 +153,10 @@ void phenotype::combine() {
 		}
 	}
 	refreshMinHeight(); // Actualiza el puntero al mínimo
+}
+
+void phenotype::refreshHeights() {
+	
 }
 
 void phenotype::refreshMaxHeight() {

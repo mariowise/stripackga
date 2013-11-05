@@ -55,6 +55,7 @@ class phenotype {
 		int expand(int, piece);
 		void swell(int);
 		void combine();
+		void refreshHeights();
 		void refreshMaxHeight();
 		void refreshMinHeight();
 };
