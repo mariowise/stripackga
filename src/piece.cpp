@@ -79,9 +79,10 @@ void piece::write(ostream & stream) {
 void phenotype::push(piece * newPiece) {
 	// Siendo que lowest contiene el stripe mas bajo
 	while(expand(lowest, *newPiece) != 0); // Se repite siempre que sea distinto de 0
-	
-	newPiece->write(cout); cout << " = ";
-	write(cout); cout << " [" << stripes.size() << "]" << endl;
+	combine();
+
+	newPiece->write(cout); cout << " => ";
+	write(cout); cout << endl << endl; // cout << " (stripe.size=" << stripes.size() << ", lowest=" << lowest << ")" << endl;
 }
 
 void phenotype::write(ostream & stream) {
@@ -91,15 +92,14 @@ void phenotype::write(ostream & stream) {
 }
 
 int phenotype::expand(int pos, piece ns) {
-	// cout << "  Expandiendo posicion " << pos << " con valor ";
-	// stripes.at(pos).write(cout); cout << endl;
-	
 	// pos es la posición del vector de stripes a partir de la cual
 	// ns es el nuevo stripe
 	piece * s = &stripes.at(pos);
 	if(ns.width == s->width) { // Si la pieza cabe justo
 		// Entonces el stripe se mantiene y cambia su altura
 		s->height += ns.height;
+		refreshMinHeight();
+		return 0;
 	}
 	if(ns.width < s->width) { // Si la pieza es menor al stripe
 		// Entonces se deben generar 2 stripes
@@ -108,19 +108,20 @@ int phenotype::expand(int pos, piece ns) {
 
 		// El nuevo stripe se inserta en la posición pos según el iterador .begin()
 		stripes.insert(stripes.begin() + pos, piece(ns.width, s->height + ns.height));
-		cout << "  Elemento insertado con nuevo largo " << stripes.size() << " ";
-		write(cout); cout << endl;
+		refreshMinHeight();
+		return 0;
 	}
 	if(ns.width > s->width) { // En este caso como el stripe candidato tiene muy poco ancho, entonces deberá inflarse
 		swell(pos);
+		refreshMinHeight();
 		return -1; // No se ha podido expandir, fue necesario inflar
 	}
-	return 0; // Retorna cero si es que se ha podido expandir exitosamente
 }
 
 void phenotype::swell(int pos) {
 	// Pos es el índice del elemento chico que hay que inflar
 	// Es necesario elegir a cual de los stripe vecinos se hinchará
+	// cout << "llamando swell con pos=" << pos << endl;
 	int minNeighbor;
 	if(pos == 0 || pos == stripes.size()-1) { // Si se trata de las condiciones de borde
 		// Entonces solo hay un vecino candidato (el de al lado)
@@ -144,13 +145,13 @@ void phenotype::swell(int pos) {
 void phenotype::combine() {
 	// Genera una pérdida de contexto respecto de los índices
 	int i, aux = 0;
-	piece x, xn;
+	piece * x, * xn;
 	for(i = 0; i < stripes.size()-1; i++) {
-		x = stripes.at(i);
-		xn= stripes.at(i+1);
-		if(x.height == xn.height) { // Si ambos tienen el mismo alto
+		x = &stripes.at(i);
+		xn= &stripes.at(i+1);
+		if(x->height == xn->height) { // Si ambos tienen el mismo alto
 			// Entonces hay que combinarlos, sumando sus anchos y dejando uno solo
-			x.width += xn.width;
+			x->width += xn->width;
 			stripes.erase(stripes.begin()+i+1);
 			i--; // Accion de redo para el for
 		}
