@@ -27,28 +27,7 @@ int main(int argc, char * argv[]) {
 
 	readInput("inst/A1.txt");
 
-	// cout << "  Construyendo contenedor de fenotipo" << endl;
-	// phenotype fenoma(widthTotal);
-
-	// cout << "  Ingresando piezas" << endl;
-	
-	// fenoma.write(cout); cout << endl;
-	
-	// fenoma.push(&pieces->at(1-1));
-	// fenoma.push(&pieces->at(5-1));
-	// fenoma.push(&pieces->at(6-1));
-	// fenoma.push(&pieces->at(4-1));
-	// fenoma.push(&pieces->at(2-1));
-	// fenoma.push(&pieces->at(3-1));
-
-	// cout << "  Individuo con fitness = " << fenoma.fitness() << endl << endl;
-
-	// int i;
-	// for(i = 0; i < pieces->size(); i++) {
-	// 	fenoma.push(&pieces->at(i));
-	// }
-
-	
+	// Instanciación
 	stripGenome genome;
 	GASimpleGA ga(genome);
 	

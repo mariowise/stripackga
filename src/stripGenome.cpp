@@ -61,5 +61,20 @@ int stripGenome::stripCrossover(const GAGenome& father, const GAGenome& mother, 
 }
 
 int stripGenome::stripMutator(GAGenome & genoma, float pmut) {
+	float flipCoin = (rand() % 1000000) / 1000000.0f;
+	if(flipCoin > pmut) // Si no corresponde generar un mutante salimos
+		return 0; 
 
+	stripGenome & newGenoma = (stripGenome &) genoma;
+
+	// Busca una posición aleatoria donde realizar un swap
+	// (swap: intercambiarlo con le vecino de a la derecha)
+	int rp = rand() % (pieceTotal-1); 
+		
+	// Swap
+	int aux = newGenoma.stripCodex[rp];
+	newGenoma.stripCodex[rp] = newGenoma.stripCodex[rp+1];
+	newGenoma.stripCodex[rp+1] = aux;
+
+	return 2; // Retorno el número de genes que cambiaron
 }
