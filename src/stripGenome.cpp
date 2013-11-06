@@ -9,6 +9,7 @@
 
 #include <stripGenome.h>
 #include <piece.h>
+#include <pmx.h>
 
 extern vector<piece> * pieces;
 
@@ -36,14 +37,14 @@ void stripGenome::stripInitializer(GAGenome & genoma) {
 	}
 	newGenoma.stripCodex = positions;
 	// Mostrar por pantalla los individuos
-	newGenoma.write(cout); cout << endl;	
+	cout << newGenoma << endl;	
 }
 
 float stripGenome::stripEvaluator(GAGenome & genoma) {
 	stripGenome & newGenoma = (stripGenome &) genoma;
 	if(newGenoma.stripCodexSize != pieceTotal) return 0.0f;
 	
-	newGenoma.write(cout);
+	cout << "Eval " << newGenoma;
 
 	phenotype fenoma(widthTotal);
 	int i; 
@@ -57,7 +58,46 @@ float stripGenome::stripEvaluator(GAGenome & genoma) {
 }
 
 int stripGenome::stripCrossover(const GAGenome& father, const GAGenome& mother, GAGenome* brother, GAGenome* sister) {
+	stripGenome & lfather = (stripGenome &) father;
+	stripGenome & lmother = (stripGenome &) mother;
+	
+	if(lfather.stripCodexSize != pieceTotal || lmother.stripCodexSize != pieceTotal) return 0;
+	
+	cout << "stripCrossover!" << endl;
 
+	// Construcción del cruzamiento
+	pmxCrossover daCross(pieceTotal, lfather.stripCodex, lmother.stripCodex);
+	daCross.cross();
+
+	int n = 0;
+
+	if(brother) {
+		stripGenome & lbrother = (stripGenome &) brother[0];
+		lbrother.stripCodexSize = pieceTotal;
+		// lbrother.stripCodex = daCross.son1;
+		lbrother.stripCodex = (int *) malloc(sizeof(int) * pieceTotal);
+		for(int i = 0; i < pieceTotal; i++)
+			lbrother.stripCodex[i] = lfather.stripCodex[i];
+		lbrother._evaluated = gaFalse;
+		n++;
+	}
+
+	if(sister) {
+		stripGenome & lsister = (stripGenome &) sister[0];
+		lsister.stripCodexSize = pieceTotal;
+		// lsister.stripCodex = daCross.son2;
+		lsister.stripCodex = (int *) malloc(sizeof(int) * pieceTotal);
+		for(int i = 0; i < pieceTotal; i++)
+			lsister.stripCodex[i] =	lmother.stripCodex[i];
+		lsister._evaluated = gaFalse;
+		n++;
+	}
+
+
+
+	cout << "Saliendo de la función stripCrossover return " << n << endl;
+	
+	return n;
 }
 
 int stripGenome::stripMutator(GAGenome & genoma, float pmut) {

@@ -9,6 +9,7 @@ class stripGenome : public GAGenome {
 		int * stripCodex;
 		int stripCodexSize;
 
+		GADefineIdentity("stripGenome", 201);
 		static void stripInitializer(GAGenome &);
 		static float stripEvaluator(GAGenome &);
 		static int stripCrossover(const GAGenome&, const GAGenome&, GAGenome*, GAGenome*);
@@ -21,16 +22,13 @@ class stripGenome : public GAGenome {
 			crossover(stripCrossover);
 			mutator(stripMutator);
 		}
-
-		stripGenome(int size) {
-			initializer(stripInitializer);
-			evaluator(stripEvaluator);
-			crossover(stripCrossover);
-			mutator(stripMutator);
-		}
-
+		
 		stripGenome(const stripGenome & orig) {
 			copy(orig);
+		}
+
+		virtual ~stripGenome() {
+			
 		}
 
 		// Operadores
@@ -42,9 +40,15 @@ class stripGenome : public GAGenome {
 		// Métodos
 		virtual void copy(const GAGenome & orig) {
 			GAGenome::copy(orig);
-			stripGenome & newGenome = (stripGenome &) orig;
+			stripGenome & theOrig = (stripGenome &) orig; // Cast
+			
+			// Copy
+			stripCodexSize = theOrig.stripCodexSize;
+			stripCodex = (int *) malloc(sizeof(int) * stripCodexSize);
+			for(int i = 0; i < stripCodexSize; i++)
+				stripCodex[i] = theOrig.stripCodex[i];
 		}
-
+		
 		virtual GAGenome * clone(GAGenome::CloneMethod) const {
 			return new stripGenome(*this);
 		}

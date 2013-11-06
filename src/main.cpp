@@ -27,19 +27,26 @@ int main(int argc, char * argv[]) {
 
 	readInput("inst/A1.txt");
 
+	cout << "Peso GAGenome:" << sizeof(char) << endl;	
+	cout << "Peso stripGenome:" << sizeof(int) << endl;	
+
 	// Instanciación
 	stripGenome genome;
-	genome.stripInitializer((GAGenome &) genome);
+	genome.stripInitializer(genome);
 	GASimpleGA ga(genome);
 	
 	// Configuración
-	ga.populationSize(10-1);
-	ga.nGenerations(500);
+	ga.populationSize(10);
+	ga.nGenerations(2);
 	ga.pMutation(0.03);
-	ga.pCrossover(0.9);
+	ga.pCrossover(0.95);
 
 	// Lanzamiento
 	ga.evolve();
-	
+
+	cout << "-----------------------------------------------------------" << endl;
+	cout << "El mejor individuo es " << ga.statistics().bestIndividual() << endl;
+	cout << "-----------------------------------------------------------" << endl;
+
 	return EXIT_SUCCESS;
 }
