@@ -29,10 +29,11 @@ int main(int argc, char * argv[]) {
 
 	// Instanciación
 	stripGenome genome;
+	genome.stripInitializer((GAGenome &) genome);
 	GASimpleGA ga(genome);
 	
 	// Configuración
-	ga.populationSize(10);
+	ga.populationSize(10-1);
 	ga.nGenerations(500);
 	ga.pMutation(0.03);
 	ga.pCrossover(0.9);
