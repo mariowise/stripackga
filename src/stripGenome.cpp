@@ -66,6 +66,7 @@ int stripGenome::stripMutator(GAGenome & genoma, float pmut) {
 		return 0; 
 
 	stripGenome & newGenoma = (stripGenome &) genoma;
+	if(newGenoma.stripCodexSize != pieceTotal) return 0;
 
 	// Busca una posición aleatoria donde realizar un swap
 	// (swap: intercambiarlo con le vecino de a la derecha)
