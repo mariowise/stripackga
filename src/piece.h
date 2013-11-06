@@ -48,6 +48,7 @@ class phenotype {
 
 		void push(piece *);
 		void write(ostream &);
+		float fitness();
 
 	private:
 		int lowest; // El índice del stripe mas bajo

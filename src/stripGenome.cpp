@@ -10,9 +10,15 @@
 #include <stripGenome.h>
 #include <piece.h>
 
+extern vector<piece> * pieces;
+
+extern int pieceTotal;
+
+extern int widthTotal;
+
 void stripGenome::stripInitializer(GAGenome & genoma) {
 	stripGenome & newGenoma = (stripGenome &) genoma;
-	newGenoma.stripCodexSize = 5;
+	newGenoma.stripCodexSize = pieceTotal;
 	int i, pos;
 	int * positions = (int *) malloc(sizeof(int) * newGenoma.stripCodexSize);
 	for(i = 0; i < newGenoma.stripCodexSize; i++)
@@ -29,13 +35,25 @@ void stripGenome::stripInitializer(GAGenome & genoma) {
 		}
 	}
 	newGenoma.stripCodex = positions;
-	newGenoma.write(cout);
+	// Mostrar por pantalla los individuos
+	newGenoma.write(cout); cout << endl;	
 }
 
 float stripGenome::stripEvaluator(GAGenome & genoma) {
-	// stripGenome & theGenoma = (stripGenome &) genoma;
-	// cout << "  Evaluando tipo de largo " << theGenoma.stripCodexSize << endl;
-	// theGenoma.write(cout);
+	stripGenome & newGenoma = (stripGenome &) genoma;
+	if(newGenoma.stripCodexSize != pieceTotal) return 0.0f;
+	
+	newGenoma.write(cout);
+
+	phenotype fenoma(widthTotal);
+	int i; 
+	for(i = 0; i < pieces->size(); i++)
+		fenoma.push(&pieces->at(newGenoma.stripCodex[i]));
+	float fitness = fenoma.fitness(); // 
+	
+	cout << " => fitness " << (1/fitness) << endl;
+
+	return (1/fitness); // Recordar que el fitness mas grande es el mejor
 }
 
 int stripGenome::stripCrossover(const GAGenome& father, const GAGenome& mother, GAGenome* brother, GAGenome* sister) {

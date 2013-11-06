@@ -58,7 +58,6 @@ class stripGenome : public GAGenome {
 					stream << ", ";
 			}
 			stream << "]";
-			stream << endl;
 		}
 };
 

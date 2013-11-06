@@ -77,8 +77,8 @@ void phenotype::push(piece * newPiece) {
 	while(expand(lowest, *newPiece) != 0); // Se repite siempre que sea distinto de 0
 	combine();
 
-	newPiece->write(cout); cout << " => ";
-	write(cout); cout << endl << endl; // cout << " (stripe.size=" << stripes.size() << ", lowest=" << lowest << ")" << endl;
+	// newPiece->write(cout); cout << " => ";
+	// write(cout); cout << endl << endl; // cout << " (stripe.size=" << stripes.size() << ", lowest=" << lowest << ")" << endl;
 }
 
 void phenotype::write(ostream & stream) {
@@ -94,7 +94,7 @@ int phenotype::expand(int pos, piece ns) {
 	if(ns.width == s->width) { // Si la pieza cabe justo
 		// Entonces el stripe se mantiene y cambia su altura
 		s->height += ns.height;
-		refreshMinHeight();
+		refreshHeights();
 		return 0;
 	}
 	if(ns.width < s->width) { // Si la pieza es menor al stripe
@@ -104,12 +104,12 @@ int phenotype::expand(int pos, piece ns) {
 
 		// El nuevo stripe se inserta en la posición pos según el iterador .begin()
 		stripes.insert(stripes.begin() + pos, piece(ns.width, s->height + ns.height));
-		refreshMinHeight();
+		refreshHeights();
 		return 0;
 	}
 	if(ns.width > s->width) { // En este caso como el stripe candidato tiene muy poco ancho, entonces deberá inflarse
 		swell(pos);
-		refreshMinHeight();
+		refreshHeights();
 		return -1; // No se ha podido expandir, fue necesario inflar
 	}
 }
@@ -152,11 +152,12 @@ void phenotype::combine() {
 			i--; // Accion de redo para el for
 		}
 	}
-	refreshMinHeight(); // Actualiza el puntero al mínimo
+	refreshHeights(); // Actualiza el puntero al mínimo
 }
 
 void phenotype::refreshHeights() {
-	
+	refreshMinHeight();
+	refreshMaxHeight();
 }
 
 void phenotype::refreshMaxHeight() {
@@ -175,4 +176,16 @@ void phenotype::refreshMinHeight() {
 			pmin = i;
 	}
 	lowest = pmin;
+}
+
+float phenotype::fitness() {
+	// Es obvio que el fitness será la variable 'height', 
+	// pero para añadirle algo mas interesante, se la sumará 
+	// el factor de área que queda disponible para nuevas 
+	// piezas por debajo de height (Que oscila entre (float) [0, 1])
+	// [Se supone que este porcentaje debe ser lo mas bajo posible]
+	int i, area = 0, fullArea = widthTotal * height;
+	for(i = 0; i < stripes.size(); i++)
+		area += stripes.at(i).width * stripes.at(i).height;
+	return (float) ((float) height + ( 1.0f - (float) area / (float) fullArea ));
 }
