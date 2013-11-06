@@ -74,10 +74,7 @@ int stripGenome::stripCrossover(const GAGenome& father, const GAGenome& mother, 
 	if(brother) {
 		stripGenome & lbrother = (stripGenome &) brother[0];
 		lbrother.stripCodexSize = pieceTotal;
-		// lbrother.stripCodex = daCross.son1;
-		lbrother.stripCodex = (int *) malloc(sizeof(int) * pieceTotal);
-		for(int i = 0; i < pieceTotal; i++)
-			lbrother.stripCodex[i] = lfather.stripCodex[i];
+		lbrother.stripCodex = daCross.son1;
 		lbrother._evaluated = gaFalse;
 		n++;
 	}
@@ -85,10 +82,7 @@ int stripGenome::stripCrossover(const GAGenome& father, const GAGenome& mother, 
 	if(sister) {
 		stripGenome & lsister = (stripGenome &) sister[0];
 		lsister.stripCodexSize = pieceTotal;
-		// lsister.stripCodex = daCross.son2;
-		lsister.stripCodex = (int *) malloc(sizeof(int) * pieceTotal);
-		for(int i = 0; i < pieceTotal; i++)
-			lsister.stripCodex[i] =	lmother.stripCodex[i];
+		lsister.stripCodex = daCross.son2;
 		lsister._evaluated = gaFalse;
 		n++;
 	}
