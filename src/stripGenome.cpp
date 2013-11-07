@@ -9,6 +9,7 @@
 
 #include <stripGenome.h>
 #include <piece.h>
+#include <phenotype.h>
 #include <pmx.h>
 
 extern vector<piece> * pieces;
@@ -16,6 +17,10 @@ extern vector<piece> * pieces;
 extern int pieceTotal;
 
 extern int widthTotal;
+
+extern float myMaxEver;
+
+extern int * myBestGenome;
 
 void stripGenome::stripInitializer(GAGenome & genoma) {
 	stripGenome & newGenoma = (stripGenome &) genoma;
@@ -37,22 +42,30 @@ void stripGenome::stripInitializer(GAGenome & genoma) {
 	}
 	newGenoma.stripCodex = positions;
 	// Mostrar por pantalla los individuos
-	cout << newGenoma << endl;	
+	// cout << newGenoma << endl;
 }
 
 float stripGenome::stripEvaluator(GAGenome & genoma) {
 	stripGenome & newGenoma = (stripGenome &) genoma;
 	if(newGenoma.stripCodexSize != pieceTotal) return 0.0f;
 	
-	cout << "Eval " << newGenoma;
+	// cout << "Eval " << newGenoma;
 
 	phenotype fenoma(widthTotal);
 	int i; 
 	for(i = 0; i < pieces->size(); i++)
 		fenoma.push(&pieces->at(newGenoma.stripCodex[i]));
-	float fitness = fenoma.fitness(); // 
+	float fitness = fenoma.fitness();
+
+	if(myMaxEver <= (1/fitness)) { // Este es el mejor hasta ahora
+		// cout << "Encontré un máximo local" << endl;
+		myMaxEver = (1/fitness);
+		for(int i = 0; i < pieceTotal; i++) // Lo copia
+			myBestGenome[i] = newGenoma.stripCodex[i];
+		// cout << "Saliendo" << endl;
+	}
 	
-	cout << " => fitness " << (1/fitness) << endl;
+	// cout << " => fitness " << (1/fitness) << endl;	
 
 	return (1/fitness); // Recordar que el fitness mas grande es el mejor
 }
@@ -63,7 +76,7 @@ int stripGenome::stripCrossover(const GAGenome& father, const GAGenome& mother, 
 	
 	if(lfather.stripCodexSize != pieceTotal || lmother.stripCodexSize != pieceTotal) return 0;
 	
-	cout << "stripCrossover!" << endl;
+	// cout << "stripCrossover!" << endl;
 
 	// Construcción del cruzamiento
 	pmxCrossover daCross(pieceTotal, lfather.stripCodex, lmother.stripCodex);
@@ -87,9 +100,12 @@ int stripGenome::stripCrossover(const GAGenome& father, const GAGenome& mother, 
 		n++;
 	}
 
+	if(n == 1) {
+		// cout << "Estamos en la B!!!!" << endl;
+		exit(0);
+	}
 
-
-	cout << "Saliendo de la función stripCrossover return " << n << endl;
+	// cout << "Saliendo de la función stripCrossover return " << n << endl;
 	
 	return n;
 }
@@ -112,4 +128,12 @@ int stripGenome::stripMutator(GAGenome & genoma, float pmut) {
 	newGenoma.stripCodex[rp+1] = aux;
 
 	return 2; // Retorno el número de genes que cambiaron
+}
+
+int stripGenome::getHeight() {
+	phenotype fenoma(widthTotal);
+	int i; 
+	for(i = 0; i < pieces->size(); i++)
+		fenoma.push(&pieces->at(stripCodex[i]));
+	return fenoma.height;
 }

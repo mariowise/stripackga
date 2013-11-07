@@ -29,11 +29,11 @@ class pmxCrossover {
 			cuti = rand() % (length-1);
 			cutj = cuti + rand() % (length -cuti);
 
-			cout << "pmxCrossover {" << cuti << ", " << cutj << "} of " << length << endl; 
-			cout << "- pa: ";
-			write(pa);
-			cout << "- ma: ";
-			write(ma);
+			// cout << "pmxCrossover {" << cuti << ", " << cutj << "} of " << length << endl; 
+			// cout << "- pa: ";
+			// write(pa);
+			// cout << "- ma: ";
+			// write(ma);
 			
 			// Init para listado de faltantes
 			for(int i = 0; i < length; i++) {
@@ -66,7 +66,7 @@ class pmxCrossover {
 			// cout << "- son2: "; write(son2);
 			// cout << "- son2 remains: "; write(remains2);
 
-			cout << "- Constructor flag" << endl;	
+			// cout << "- Constructor flag" << endl;	
 		}
 		
 		~pmxCrossover() {}

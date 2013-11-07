@@ -57,12 +57,14 @@ class stripGenome : public GAGenome {
 			int i;
 			stream << "[";
 			for(i = 0; i < stripCodexSize; i++) {
-				stream << stripCodex[i];
+				stream << (stripCodex[i]+1);
 				if(i != (stripCodexSize - 1))
 					stream << ", ";
 			}
 			stream << "]";
 		}
+
+		int getHeight();
 };
 
 #endif

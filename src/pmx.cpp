@@ -15,7 +15,7 @@ int pmxCrossover::vectorFind(vector<int> & vector, int elem) {
 
 void pmxCrossover::cross() {
 	
-	cout << "- Comenzando cross" << endl;
+	// cout << "- Comenzando cross" << endl;
 
 	for(int i = 0; i < length; i++) {
 		if(i < cuti || i > cutj) { // Si esta fuera de la sección
@@ -46,10 +46,10 @@ void pmxCrossover::cross() {
 		}
 	}
 
-	cout << "- son1: ";
-	write(son1);
-	cout << "- son2: ";
-	write(son2);
+	// cout << "- son1: ";
+	// write(son1);
+	// cout << "- son2: ";
+	// write(son2);
 }
 
 void pmxCrossover::write(int * list) {
