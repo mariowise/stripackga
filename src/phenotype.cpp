@@ -54,9 +54,7 @@ int phenotype::expand(int pos, piece ns) {
 		return 0;
 	}
 	else if(ns.width > s->width) { // En este caso como el stripe candidato tiene muy poco ancho, entonces deberá inflarse
-		// cout << "Swell on hell"; 
 		swell(pos);
-		// cout << endl;
 		refreshHeights();
 		return -1; // No se ha podido expandir, fue necesario inflar
 	}

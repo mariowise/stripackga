@@ -18,10 +18,6 @@ extern int pieceTotal;
 
 extern int widthTotal;
 
-extern float myMaxEver;
-
-extern int * myBestGenome;
-
 void stripGenome::stripInitializer(GAGenome & genoma) {
 	stripGenome & newGenoma = (stripGenome &) genoma;
 	newGenoma.stripCodexSize = pieceTotal;
@@ -57,14 +53,6 @@ float stripGenome::stripEvaluator(GAGenome & genoma) {
 		fenoma.push(&pieces->at(newGenoma.stripCodex[i]));
 	float fitness = fenoma.fitness();
 
-	if(myMaxEver <= (1/fitness)) { // Este es el mejor hasta ahora
-		// cout << "Encontré un máximo local" << endl;
-		myMaxEver = (1/fitness);
-		for(int i = 0; i < pieceTotal; i++) // Lo copia
-			myBestGenome[i] = newGenoma.stripCodex[i];
-		// cout << "Saliendo" << endl;
-	}
-	
 	// cout << " => fitness " << (1/fitness) << endl;	
 
 	return (1/fitness); // Recordar que el fitness mas grande es el mejor
@@ -100,10 +88,10 @@ int stripGenome::stripCrossover(const GAGenome& father, const GAGenome& mother, 
 		n++;
 	}
 
-	if(n == 1) {
-		// cout << "Estamos en la B!!!!" << endl;
-		exit(0);
-	}
+	// if(n == 1) {
+	// 	// cout << "Estamos en la B!!!!" << endl;
+	// 	exit(0);
+	// }
 
 	// cout << "Saliendo de la función stripCrossover return " << n << endl;
 	
