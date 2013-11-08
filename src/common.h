@@ -1,4 +1,6 @@
 
+#include <iostream>
+#include <fstream>
 #include <vector>
 #include <piece.h>
 
@@ -9,3 +11,6 @@ vector<piece> * pieces;
 int pieceTotal;
 
 int widthTotal;
+
+ofstream * outputFile;
+

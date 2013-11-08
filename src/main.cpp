@@ -6,6 +6,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
+#include <fstream>
 #include <vector>
 
 #include <stripGenome.h>
@@ -17,6 +18,8 @@ extern vector<piece> * pieces;
 extern int pieceTotal;
 
 extern int widthTotal;
+
+extern ofstream * outputFile;
 
 
 using namespace std;
@@ -32,6 +35,10 @@ int main(int argc, char * argv[]) {
 		cout << argv[1] << "\t";
 		readInput(argv[1]);
 	}
+
+	ofstream file("output.txt");
+
+	outputFile = &file;
 
 	// Instanciación
 	stripGenome genome;
@@ -51,6 +58,11 @@ int main(int argc, char * argv[]) {
 
 	// cout << " " << bestIndividual << " = " << bestIndividual.getHeight() << endl;
 	cout << " " << bestIndividual.getHeight() << endl;
+
+	cout << ga.statistics() << endl;
+
+
+	file.close();
 
 	return EXIT_SUCCESS;
 }
