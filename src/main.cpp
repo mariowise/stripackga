@@ -8,6 +8,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <ctime>
 
 #include <stripGenome.h>
 #include <piece.h>
@@ -24,45 +25,64 @@ extern ofstream * outputFile;
 
 using namespace std;
 
+void run(char * path) {
+
+	double elapsedTime;
+	clock_t begin, end;
+	int i = 0;
+
+	ofstream solutions("solutions.csv", std::ios::app);
+	ofstream times("times.csv", std::ios::app);
+	outputFile = new ofstream("output.txt");
+
+	for(i = 0; i < 10; i++) {
+		begin = clock();
+			readInput(path);
+
+			// Instancia
+			stripGenome genome;
+			genome.stripInitializer(genome);
+			GASimpleGA ga(genome);
+
+			// Configuración
+			ga.populationSize(50);
+			ga.nGenerations(700);
+			ga.pCrossover(0.45);
+			ga.pMutation(0.05);
+
+			// Lanzamiento
+			ga.evolve();
+
+		end = clock();
+
+		// Solution recovery
+		stripGenome & bestIndividual = (stripGenome &) ga.statistics().bestIndividual();
+		elapsedTime = double(end - begin) / CLOCKS_PER_SEC;
+
+		solutions << bestIndividual.getHeight() << ";";
+		times << elapsedTime << ";";
+	}
+
+	solutions << endl;
+	times << endl;
+
+	solutions.close();
+	times.close();
+	outputFile->close();
+
+}
+
 int main(int argc, char * argv[]) {
 	
 	srand(time(NULL));
 
-	if(argc == 1) {
-		cout << "inst/A1.txt\t" << endl;
-		readInput("inst/A1.txt");
+	if(argc != 1) {
+		run(argv[1]);
+		cout << "done " << argv[1] << endl;
 	} else {
-		cout << argv[1] << "\t";
-		readInput(argv[1]);
+		cout << "* Error: argv[1] was empty" << endl;
+		exit(1);
 	}
-
-	ofstream file("output.txt");
-
-	outputFile = &file;
-
-	// Instanciación
-	stripGenome genome;
-	genome.stripInitializer(genome);
-	GASimpleGA ga(genome);
-	
-	// Configuración
-	ga.populationSize(49); // Ojo que este número debe ser par o presenta comportamiento extraño
-	ga.nGenerations(500);
-	ga.pMutation(0.03);
-	ga.pCrossover(0.90);
-
-	// Lanzamiento
-	ga.evolve();
-
-	stripGenome & bestIndividual = (stripGenome &) ga.statistics().bestIndividual();
-
-	// cout << " " << bestIndividual << " = " << bestIndividual.getHeight() << endl;
-	cout << " " << bestIndividual.getHeight() << endl;
-
-	cout << ga.statistics() << endl;
-
-
-	file.close();
 
 	return EXIT_SUCCESS;
 }
