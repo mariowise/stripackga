@@ -31,11 +31,12 @@ void run(char * path) {
 	clock_t begin, end;
 	int i = 0;
 
-	ofstream solutions("solutions.csv", std::ios::app);
-	ofstream times("times.csv", std::ios::app);
-	outputFile = new ofstream("output.txt");
+	// ofstream solutions("solutions.csv", std::ios::app);
+	// ofstream times("times.csv", std::ios::app);
+	// outputFile = new ofstream("output.txt");
 
-	for(i = 0; i < 10; i++) {
+
+	for(i = 0; i < 1; i++) {
 		begin = clock();
 			readInput(path);
 
@@ -59,16 +60,18 @@ void run(char * path) {
 		stripGenome & bestIndividual = (stripGenome &) ga.statistics().bestIndividual();
 		elapsedTime = double(end - begin) / CLOCKS_PER_SEC;
 
-		solutions << bestIndividual.getHeight() << ";";
-		times << elapsedTime << ";";
+		// solutions << bestIndividual.getHeight() << ";";
+		// times << elapsedTime << ";";
+
+		cout << "Mejor= " << bestIndividual.getHeight() << "\t" << elapsedTime << " seg." << endl;
 	}
 
-	solutions << endl;
-	times << endl;
+	// solutions << endl;
+	// times << endl;
 
-	solutions.close();
-	times.close();
-	outputFile->close();
+	// solutions.close();
+	// times.close();
+	// outputFile->close();
 
 }
 
@@ -78,7 +81,7 @@ int main(int argc, char * argv[]) {
 
 	if(argc != 1) {
 		run(argv[1]);
-		cout << "done " << argv[1] << endl;
+		// cout << "done " << argv[1] << endl;
 	} else {
 		cout << "* Error: argv[1] was empty" << endl;
 		exit(1);

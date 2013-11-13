@@ -55,9 +55,9 @@ float stripGenome::stripEvaluator(GAGenome & genoma) {
 		fenoma.push(&pieces->at(newGenoma.stripCodex[i]));
 	float fitness = fenoma.fitness();
 
-	ofstream & file = *outputFile;
+	// ofstream & file = *outputFile;
 
-	file << newGenoma.getHeight() << endl;
+	// file << newGenoma.getHeight() << endl;
 
 	// cout << " => fitness " << (1/fitness) << endl;
 
